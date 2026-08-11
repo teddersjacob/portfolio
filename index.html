@@ -7,33 +7,8 @@
     <title>Jacob Tedders — Product Manager</title>
 
     <!-- ============================================================ -->
-    <!-- Adobe Target — Anti-flicker snippet                          -->
-    <!-- Hides body until at.js fires its first page-load request,    -->
-    <!-- then reveals it (or after 3 s as a safety net).              -->
-    <!-- ============================================================ -->
-    <style id="at-body-style">body { opacity: 0 !important }</style>
-    <script>
-      (function (doc, timeout) {
-        var STYLE_ID = 'at-body-style';
-        function removeStyle() {
-          var el = doc.getElementById(STYLE_ID);
-          if (el && el.parentNode) el.parentNode.removeChild(el);
-        }
-        // Safety-net: always reveal after timeout even if at.js fails
-        setTimeout(removeStyle, timeout);
-        // Reveal as soon as Target fires its first request
-        window.addEventListener('at-request-succeeded', removeStyle, { once: true });
-        window.addEventListener('at-request-failed',    removeStyle, { once: true });
-      }(document, 3000));
-    </script>
-
-    <!-- ============================================================ -->
     <!-- Adobe Target — Global Settings                               -->
     <!-- ⚠️  This block MUST appear BEFORE the at.js <script> tag.   -->
-    <!--                                                              -->
-    <!-- How to get your credentials:                                 -->
-    <!--   Adobe Target UI > Administration > Implementation          -->
-    <!--   Copy clientCode, imsOrgId, and serverDomain from there.   -->
     <!-- ============================================================ -->
     <script>
       window.targetGlobalSettings = {
@@ -43,39 +18,29 @@
         serverDomain: "targetdataplatform.tt.omtrdc.net",
 
         // ── Timeouts ────────────────────────────────────────────────
-        timeout:            2000,   // ms to wait for a Target response
-        visitorApiTimeout:  2000,   // ms to wait for Visitor API
+        timeout:            2000,
+        visitorApiTimeout:  2000,
 
         // ── Page-load / global mbox ─────────────────────────────────
-        globalMboxAutoCreate: true,   // fire target-global-mbox automatically
+        globalMboxAutoCreate: true,
         pageLoadEnabled:      true,
 
-        // ── Flicker control ─────────────────────────────────────────
-        bodyHidingEnabled:          true,
-        bodyHiddenStyle:            "body{opacity:0 !important}",
-        defaultContentHiddenStyle:  "visibility:hidden;",
-        defaultContentVisibleStyle: "visibility:visible;",
+        // ── Flicker control — disabled so the page always renders   ──
+        // Body hiding requires a reliable connection to Adobe's edge
+        // servers. Disabling it here ensures the site never goes blank
+        // if a Target request is slow or fails.
+        bodyHidingEnabled: false,
 
         // ── Misc ────────────────────────────────────────────────────
-        crossDomain:    "disabled",
-        secureOnly:     true,
-        optoutEnabled:  false,
-        optinEnabled:   false,
+        crossDomain:   "disabled",
+        secureOnly:    true,
+        optoutEnabled: false,
+        optinEnabled:  false,
       };
     </script>
 
     <!-- ============================================================ -->
-    <!-- Adobe Target — at.js                                         -->
-    <!--                                                              -->
-    <!-- Steps to activate:                                           -->
-    <!--   1. Log in to Adobe Target.                                 -->
-    <!--   2. Go to Administration > Implementation.                  -->
-    <!--   3. Click "Download at.js" (configure version there).       -->
-    <!--   4. Replace /public/at.js with the downloaded file.         -->
-    <!--   5. Update the credentials in targetGlobalSettings above.   -->
-    <!--                                                              -->
-    <!-- The current /public/at.js is a no-op stub — the site works  -->
-    <!-- normally without it; swap it in when credentials are ready.  -->
+    <!-- Adobe Target — at.js 2.11.9                                  -->
     <!-- ============================================================ -->
     <script src="/teddersjacob/at.js"></script>
     <script type="module" crossorigin src="/teddersjacob/assets/index-nqrPVXC-.js"></script>
